@@ -1,0 +1,13 @@
+# dependências instaladas pelo Composer (quem baixar o projeto roda "composer install")
+/vendor/
+
+# configuração com a senha do banco — NÃO pode ir para o GitHub
+/config.php
+
+# arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# arquivos de teste da instalação (podem ser apagados)
+/teste.php
+/diagnostico.php
