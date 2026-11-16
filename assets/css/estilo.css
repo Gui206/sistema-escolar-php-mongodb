@@ -1,0 +1,222 @@
+/* =========================================================
+   Sistema Escolar — visual inspirado em planilha (Excel/Sheets)
+   ========================================================= */
+:root {
+    --verde: #217346;          /* verde "planilha" */
+    --verde-escuro: #185c37;
+    --verde-claro: #e6f2ea;
+    --grade: #d5d9de;          /* linhas da grade */
+    --cabecalho: #f1f3f5;      /* fundo dos cabeçalhos (A, B, C... / 1, 2, 3...) */
+    --cabecalho-texto: #5f6670;
+    --fundo: #f6f7f8;
+    --papel: #ffffff;
+    --texto: #1f2328;
+    --mono: "Cascadia Mono", Consolas, "SFMono-Regular", Menlo, monospace;
+}
+
+body {
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    font-size: .92rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- barra superior ---------- */
+.barra-app {
+    background: var(--verde);
+    color: #fff;
+}
+.barra-app .navbar-brand { font-weight: 600; letter-spacing: .2px; }
+.barra-app .navbar-brand .logo {
+    display: inline-grid; place-items: center;
+    width: 28px; height: 28px; border-radius: 4px;
+    background: #fff; color: var(--verde); font-weight: 800; font-size: .85rem;
+}
+.barra-app .nav-link { color: rgba(255,255,255,.85); border-radius: 4px; padding: .35rem .75rem !important; }
+.barra-app .nav-link:hover { color: #fff; background: rgba(255,255,255,.12); }
+.barra-app .nav-link.active { color: var(--verde-escuro); background: #fff; font-weight: 600; }
+
+/* ---------- faixa de ferramentas (ribbon) ---------- */
+.ribbon {
+    background: var(--papel);
+    border-bottom: 1px solid var(--grade);
+    padding: .6rem 0;
+}
+.ribbon h1 { font-size: 1.15rem; font-weight: 600; margin: 0; }
+.ribbon .caminho { font-size: .78rem; color: var(--cabecalho-texto); }
+
+/* "barra de fórmulas" usada como busca */
+.barra-formula {
+    display: flex; align-items: stretch;
+    border: 1px solid var(--grade); border-radius: 4px; background: #fff;
+    min-width: 0; flex: 1 1 260px; max-width: 460px;
+}
+.barra-formula .fx {
+    display: grid; place-items: center; padding: 0 .6rem;
+    border-right: 1px solid var(--grade); color: var(--cabecalho-texto);
+    font-style: italic; font-family: Georgia, serif; font-weight: 600;
+}
+.barra-formula input { border: 0; outline: 0; padding: .35rem .6rem; flex: 1; min-width: 0; background: transparent; }
+.barra-formula button { border: 0; background: transparent; padding: 0 .7rem; color: var(--verde); }
+
+.btn-verde { background: var(--verde); border-color: var(--verde); color: #fff; }
+.btn-verde:hover, .btn-verde:focus { background: var(--verde-escuro); border-color: var(--verde-escuro); color: #fff; }
+
+/* ---------- a "planilha" ---------- */
+.folha {
+    background: var(--papel);
+    border: 1px solid var(--grade);
+    border-radius: 6px;
+    overflow: hidden;
+}
+.folha .table-responsive { max-height: 68vh; }
+.planilha {
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: .88rem;
+    white-space: nowrap;
+}
+.planilha th, .planilha td {
+    border-right: 1px solid var(--grade);
+    border-bottom: 1px solid var(--grade);
+    padding: .38rem .6rem;
+    vertical-align: middle;
+}
+/* linha com as letras das colunas (A, B, C...) */
+.planilha thead tr.letras th {
+    background: var(--cabecalho); color: var(--cabecalho-texto);
+    font-weight: 500; font-size: .72rem; text-align: center;
+    padding: .15rem; position: sticky; top: 0; z-index: 3;
+}
+/* linha com os nomes das colunas */
+.planilha thead tr.titulos th {
+    background: #fafbfc; font-weight: 600; font-size: .78rem;
+    text-transform: uppercase; letter-spacing: .3px; color: #3d434a;
+    position: sticky; top: 22px; z-index: 3;
+    box-shadow: inset 0 -2px 0 var(--verde);
+}
+/* coluna com o número da linha (1, 2, 3...) */
+.planilha .num {
+    background: var(--cabecalho); color: var(--cabecalho-texto);
+    text-align: center; width: 44px; min-width: 44px; font-size: .75rem;
+    position: sticky; left: 0; z-index: 2;
+}
+.planilha thead .num { z-index: 4; }
+.planilha tbody tr:hover td:not(.num) { background: var(--verde-claro); }
+.planilha tbody tr:hover .num { background: #d3e8da; color: var(--verde-escuro); font-weight: 600; }
+.planilha td.celula-num { font-family: var(--mono); text-align: right; }
+.planilha td.mono { font-family: var(--mono); }
+.planilha td a:not(.btn) { text-decoration: none; }
+.planilha td a:not(.btn):hover { text-decoration: underline; color: var(--verde-escuro) !important; }
+.planilha td.acoes { text-align: right; }
+.planilha .vazia td { color: var(--cabecalho-texto); text-align: center; padding: 2rem; white-space: normal; }
+
+/* barra de status (rodapé da folha, igual ao Excel) */
+.barra-status {
+    display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; justify-content: space-between;
+    background: var(--cabecalho); border-top: 1px solid var(--grade);
+    padding: .3rem .75rem; font-size: .76rem; color: var(--cabecalho-texto);
+}
+.barra-status b { color: var(--texto); font-weight: 600; }
+
+/* abas de planilha (Estudantes | Cursos | Matrículas) */
+.abas-folha { display: flex; gap: 2px; padding: 0 .5rem; background: var(--cabecalho); border-top: 1px solid var(--grade); overflow-x: auto; }
+.abas-folha a {
+    padding: .35rem 1rem; font-size: .8rem; color: var(--cabecalho-texto); text-decoration: none;
+    border: 1px solid transparent; border-top: 0; border-radius: 0 0 4px 4px; white-space: nowrap;
+}
+.abas-folha a:hover { background: #e7eaed; }
+.abas-folha a.ativa { background: #fff; color: var(--verde); font-weight: 600; border-color: var(--grade); box-shadow: inset 0 -2px 0 var(--verde); }
+
+/* botões de ação pequenos dentro das células */
+.btn-celula { padding: .1rem .4rem; font-size: .8rem; line-height: 1.3; }
+
+/* ---------- etiquetas de status ---------- */
+.etiqueta { display: inline-block; padding: .1rem .5rem; border-radius: 3px; font-size: .75rem; font-weight: 600; }
+.etiqueta-Ativa { background: #dcf3e4; color: #146c3a; }
+.etiqueta-Trancada { background: #fff1d6; color: #8a5a00; }
+.etiqueta-Concluída { background: #dde8fb; color: #1d4fa3; }
+.etiqueta-Cancelada { background: #f9dede; color: #a12a2a; }
+
+/* barrinha de vagas ocupadas */
+.ocupacao { display: flex; align-items: center; gap: .5rem; min-width: 120px; }
+.ocupacao .barra { flex: 1; height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden; }
+.ocupacao .barra span { display: block; height: 100%; background: var(--verde); }
+.ocupacao .barra span.cheio { background: #c0392b; }
+.ocupacao small { font-family: var(--mono); color: var(--cabecalho-texto); }
+
+/* ---------- fotos dos alunos ---------- */
+.avatar { border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #e9ecef; }
+.avatar-sm { width: 30px; height: 30px; }
+.avatar-md { width: 64px; height: 64px; }
+.avatar-lg { width: 160px; height: 160px; border: 4px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+.avatar-vazio {
+    display: inline-grid; place-items: center;
+    background: var(--verde-claro); color: var(--verde-escuro); font-weight: 700;
+}
+.avatar-sm.avatar-vazio { font-size: .7rem; }
+.avatar-md.avatar-vazio { font-size: 1.3rem; }
+.avatar-lg.avatar-vazio { font-size: 3rem; }
+a.ver-foto { cursor: zoom-in; }
+
+/* área de envio da foto no formulário */
+.foto-upload { text-align: center; }
+.foto-upload .previa { width: 150px; height: 150px; margin: 0 auto .75rem; position: relative; }
+.foto-upload .previa img, .foto-upload .previa .avatar-vazio { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; }
+.foto-upload .previa .avatar-vazio { font-size: 3rem; }
+
+/* ---------- formulários com cara de planilha ---------- */
+.ficha {
+    background: var(--papel); border: 1px solid var(--grade); border-radius: 6px; overflow: hidden;
+}
+.ficha > .ficha-titulo, .folha > .ficha-titulo {
+    flex-wrap: wrap;
+}
+.ficha > .ficha-titulo, .folha > .ficha-titulo {
+    background: var(--cabecalho); border-bottom: 1px solid var(--grade);
+    padding: .45rem .9rem; font-weight: 600; font-size: .85rem; color: #3d434a;
+    display: flex; align-items: center; gap: .5rem;
+}
+.ficha > .ficha-titulo i, .folha > .ficha-titulo i { color: var(--verde); }
+.folha > .ficha-titulo .btn i { color: inherit; }
+.ficha > .ficha-corpo { padding: 1rem; }
+.form-label { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: #50575e; margin-bottom: .25rem; }
+.form-control, .form-select { border-radius: 3px; border-color: #c9ced4; font-size: .9rem; }
+.form-control:focus, .form-select:focus { border-color: var(--verde); box-shadow: 0 0 0 .15rem rgba(33,115,70,.2); }
+.obrigatorio::after { content: " *"; color: #c0392b; }
+
+/* ficha de dados (tela "ver aluno"): rótulo | valor, como duas colunas */
+.dados { display: grid; grid-template-columns: minmax(110px, 35%) 1fr; margin: 0; }
+.dados dt, .dados dd {
+    margin: 0; padding: .4rem .75rem; border-bottom: 1px solid var(--grade); min-width: 0; overflow-wrap: anywhere;
+}
+.dados dt { background: #fafbfc; font-size: .75rem; font-weight: 600; text-transform: uppercase; color: #50575e; border-right: 1px solid var(--grade); }
+.dados dd { font-size: .9rem; }
+
+/* ---------- cartões do painel ---------- */
+.cartao-numero {
+    background: var(--papel); border: 1px solid var(--grade); border-radius: 6px;
+    padding: 1rem 1.1rem; display: flex; align-items: center; gap: 1rem; height: 100%;
+    text-decoration: none; color: inherit; transition: border-color .15s, box-shadow .15s;
+}
+.cartao-numero:hover { border-color: var(--verde); box-shadow: 0 2px 8px rgba(33,115,70,.12); color: inherit; }
+.cartao-numero .icone { width: 46px; height: 46px; border-radius: 8px; display: grid; place-items: center; font-size: 1.35rem; background: var(--verde-claro); color: var(--verde); }
+.cartao-numero .valor { font-family: var(--mono); font-size: 1.8rem; font-weight: 600; line-height: 1; }
+.cartao-numero .rotulo { font-size: .8rem; color: var(--cabecalho-texto); text-transform: uppercase; letter-spacing: .3px; }
+
+footer.rodape { margin-top: auto; font-size: .75rem; color: var(--cabecalho-texto); }
+
+/* ---------- celular ---------- */
+@media (max-width: 575.98px) {
+    body { font-size: .9rem; }
+    .ribbon h1 { font-size: 1.05rem; }
+    .barra-formula { max-width: none; flex-basis: 100%; }
+    .folha .table-responsive { max-height: none; }
+    .avatar-lg { width: 120px; height: 120px; }
+    .dados { grid-template-columns: 1fr; }
+    .dados dt { border-right: 0; border-bottom: 0; padding-bottom: 0; background: transparent; }
+}
