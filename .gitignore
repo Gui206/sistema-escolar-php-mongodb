@@ -1,6 +1,3 @@
-# dependências instaladas pelo Composer (quem baixar o projeto roda "composer install")
-/vendor/
-
 # configuração com a senha do banco — NÃO pode ir para o GitHub
 /config.php
 

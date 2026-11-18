@@ -74,22 +74,24 @@ Para mostrar o nome do aluno e do curso na lista de matrículas, o sistema usa o
 
 ## Como rodar
 
-**Requisitos:** XAMPP (PHP 8.1 ou superior), [Composer](https://getcomposer.org), extensão `mongodb` do PHP e um banco MongoDB (Atlas ou local).
+A pasta `vendor` (biblioteca do MongoDB) **já vem no projeto**: não é preciso instalar o Composer nem rodar `composer install`.
 
-1. Coloque a pasta do projeto em `C:\xampp\htdocs\trabalho-mongo`.
-2. Instale a extensão do MongoDB no PHP:
-   - baixe o `php_mongodb.dll` compatível em <https://github.com/mongodb/mongo-php-driver/releases> (mesma versão do PHP, `ts`, `x64`);
-   - copie para `C:\xampp\php\ext\`;
-   - no `php.ini`, adicione `extension=mongodb` e deixe `extension=zip` sem o `;`;
-   - reinicie o Apache.
-3. Na pasta do projeto, rode:
-   ```
-   composer install
-   ```
-4. Copie `config.exemplo.php` para `config.php` e coloque o endereço do seu banco:
-   - **Atlas:** `mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/`
-   - **Local:** `mongodb://localhost:27017`
-5. Acesse <http://localhost/trabalho-mongo>.
+**Requisitos:** XAMPP com PHP 8.1 ou superior, a extensão `mongodb` do PHP (versão 2.5 ou mais nova) e um banco MongoDB (Atlas ou local).
+
+1. Baixe o projeto (**Code → Download ZIP**), descompacte e coloque a pasta em `C:\xampp\htdocs\sistema-escolar-php-mongodb`.
+2. **Extensão do MongoDB no PHP** (só na primeira vez em cada computador):
+   - confira se já está instalada: `C:\xampp\php\php.exe --ri mongodb` — se mostrar a versão 2.5 ou maior, pule para o passo 3;
+   - descubra a versão do PHP com `C:\xampp\php\php.exe -v` (ex.: 8.2, ZTS, x64);
+   - em <https://github.com/mongodb/mongo-php-driver/releases>, baixe o zip com a mesma versão do PHP, `ts` e `x64` (ex.: `php_mongodb-2.x.x-8.2-ts-vs16-x64.zip`);
+   - copie o `php_mongodb.dll` para `C:\xampp\php\ext\` (renomeie para `php_mongodb.dll` se o nome vier com a versão);
+   - no `C:\xampp\php\php.ini`, adicione a linha `extension=mongodb`;
+   - reinicie o Apache no painel do XAMPP.
+3. **Configuração do banco:** copie `config.exemplo.php`, renomeie a cópia para `config.php` e coloque o endereço do banco:
+   - **Atlas (nuvem):** `mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/`
+   - **Local:** `mongodb://localhost:27017` (com o MongoDB Community Server instalado no computador)
+4. Acesse <http://localhost/sistema-escolar-php-mongodb>.
+
+O banco e as coleções são criados sozinhos na primeira gravação: não há SQL nem script para rodar.
 
 > **Observação:** algumas redes (de faculdade ou de empresa) bloqueiam a porta 27017, que é a usada pelo Atlas. Se aparecer erro de conexão, teste em outra rede (por exemplo, os dados móveis do celular) ou use o MongoDB local.
 
